@@ -3,7 +3,7 @@ import axios from "../api/axios";
 import BlogCard from "../components/BlogCard";
 import Loader from "../components/Loader";
 
-const Home = () => {
+const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -28,17 +28,6 @@ const Home = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
-
-      {/* HERO SECTION */}
-      <div className="text-center mb-10">
-        <h1 className="text-4xl font-bold mb-4">
-          Welcome to Mithil's Blog
-        </h1>
-        <p className="text-gray-600 text-lg">
-          Explore insightful articles, tech tutorials, and personal stories.
-        </p>
-      </div>
-
       {/* BLOG LIST */}
       {blogs.length === 0 ? (
         <p className="text-center text-gray-600 text-lg">
@@ -55,4 +44,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Blogs;

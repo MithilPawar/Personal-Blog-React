@@ -1,21 +1,20 @@
-
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-const Login = () => {
+const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const result = await login(username, password);
+    const result = await register(username, password);
     setLoading(false);
     if (result.success) {
       navigate("/");
@@ -27,7 +26,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700">Username</label>
@@ -53,17 +52,17 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+            className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 disabled:opacity-50"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Registering..." : "Register"}
           </button>
         </form>
         <p className="mt-4 text-center">
-          Don't have an account? <Link to="/register" className="text-blue-600 hover:underline">Register</Link>
+          Already have an account? <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
         </p>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;
