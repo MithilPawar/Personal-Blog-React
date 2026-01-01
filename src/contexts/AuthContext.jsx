@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "../api/axios";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -8,6 +9,8 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate(); // ✅ INSIDE component
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -21,11 +24,16 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axios.post("/auth/login", { username, password });
       const { token } = res.data;
+
       localStorage.setItem("token", token);
       setUser({ token });
+
       return { success: true };
     } catch (error) {
-      return { success: false, message: error.response?.data?.message || "Login failed" };
+      return {
+        success: false,
+        message: error.response?.data?.message || "Login failed",
+      };
     }
   };
 
@@ -33,17 +41,24 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axios.post("/auth/register", { username, password });
       const { token } = res.data;
+
       localStorage.setItem("token", token);
       setUser({ token });
+
       return { success: true };
     } catch (error) {
-      return { success: false, message: error.response?.data?.message || "Registration failed" };
+      return {
+        success: false,
+        message: error.response?.data?.message || "Registration failed",
+      };
     }
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
+
+    navigate("/", { replace: true }); // ✅ FORCE redirect
   };
 
   return (

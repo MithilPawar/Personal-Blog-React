@@ -7,7 +7,7 @@ const ProtectedRoute = ({ children }) => {
 
   if (loading) return <Loader />;
 
-  return user ? children : <Navigate to="/login" />;
+  return user ? children : <Navigate to="/" />;
 };
 
 export default ProtectedRoute;
