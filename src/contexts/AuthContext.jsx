@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const navigate = useNavigate(); // ✅ INSIDE component
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     setUser(null);
 
-    navigate("/", { replace: true }); // ✅ FORCE redirect
+    navigate("/", { replace: true }); 
   };
 
   return (
