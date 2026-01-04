@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
@@ -10,13 +11,20 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (token) {
-      setUser({ token });
+      const decoded = jwtDecode(token);
+      setUser({
+        token,
+        username: decoded.sub,
+        role: decoded.role,
+      });
     }
+
     setLoading(false);
   }, []);
 
@@ -24,9 +32,20 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axios.post("/auth/login", { username, password });
       const { token } = res.data;
+      const decoded = jwtDecode(token);
 
       localStorage.setItem("token", token);
-      setUser({ token });
+      setUser({
+        token,
+        username: decoded.sub,
+        role: decoded.role,
+      });
+
+      if (decoded.role === "ADMIN") {
+        navigate("/admin", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
 
       return { success: true };
     } catch (error) {
@@ -41,9 +60,14 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axios.post("/auth/register", { username, password });
       const { token } = res.data;
+      const decoded = jwtDecode(token);
 
       localStorage.setItem("token", token);
-      setUser({ token });
+      setUser({
+        token,
+        username: decoded.sub,
+        role: decoded.role,
+      });
 
       return { success: true };
     } catch (error) {
@@ -58,7 +82,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     setUser(null);
 
-    navigate("/", { replace: true }); 
+    navigate("/", { replace: true });
   };
 
   return (

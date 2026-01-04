@@ -8,12 +8,20 @@ import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
+import AdminLayout from "./components/Admin/AdminLayout.jsx";
+import AdminDashboard from "./components/Admin/AdminDashboard.jsx";
+import ManageBlogs from "./components/Admin/ManageBlogs.jsx";
+import CreateBlog from "./components/Admin/CreateBlog.jsx";
+import AdminRoute from "./components/Admin/AdminRoute.jsx";
+
 function App() {
   return (
     <Routes>
       {/* Public Layout */}
       <Route element={<Layout />}>
         <Route path="/" element={<RootPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Route>
 
       {/* 🔐 Protected Area */}
@@ -27,11 +35,24 @@ function App() {
         <Route path="/blog/:id" element={<BlogDetails />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/dashnoard" element={<RootPage />} />
+      </Route>
+
+      {/* 🔐 ADMIN AREA */}
+      <Route
+        path="/admin"
+        element={
+          <AdminRoute>
+            <AdminLayout />
+          </AdminRoute>
+        }
+      >
+        <Route index element={<AdminDashboard />} />
+        <Route path="blogs" element={<ManageBlogs />} />
+        <Route path="blogs/create" element={<CreateBlog />} />
       </Route>
 
       {/* Auth Pages */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
     </Routes>
   );
 }
