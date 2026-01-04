@@ -35,7 +35,7 @@ const BlogDetails = () => {
 
         setBlog(blogRes.data);
         setComments(commentsRes.data);
-
+        
         if (user) {
           const reactionRes = await axios.get(`/blogs/${id}/reaction/status`);
           setUserReaction(reactionRes.data.reaction);
