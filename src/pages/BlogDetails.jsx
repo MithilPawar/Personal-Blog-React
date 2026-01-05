@@ -38,7 +38,8 @@ const BlogDetails = () => {
         
         if (user) {
           const reactionRes = await axios.get(`/blogs/${id}/reaction/status`);
-          setUserReaction(reactionRes.data.reaction);
+          console.log("User reaction:", reactionRes.data.reactionType);
+          setUserReaction(reactionRes.data.reactionType);
         }
       } catch (err) {
         console.error(err);
@@ -57,7 +58,7 @@ const BlogDetails = () => {
     try {
       await axios.post(`/blogs/${id}/reaction`, { reactionType });
 
-      setUserReaction((prev) => (prev === reactionType ? null : reactionType));
+      setUserReaction((prev) => (prev === reactionType ? "NONE" : reactionType));
 
       const updatedBlog = await axios.get(`/blogs/${id}`);
       setBlog(updatedBlog.data);
