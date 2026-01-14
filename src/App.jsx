@@ -8,11 +8,12 @@ import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
-import AdminLayout from "./components/Admin/AdminLayout.jsx";
-import AdminDashboard from "./components/Admin/AdminDashboard.jsx";
-import ManageBlogs from "./components/Admin/ManageBlogs.jsx";
-import CreateBlog from "./components/Admin/CreateBlog.jsx";
-import AdminRoute from "./components/Admin/AdminRoute.jsx";
+import AdminLayout from "./components/Admin/layout/AdminLayout.jsx";
+import AdminDashboard from "./components/Admin/pages/AdminDashboard.jsx";
+import AdminBlogs from "./components/Admin/pages/AdminBlogs.jsx";
+import CreateBlog from "./components/Admin/pages/CreateBlog.jsx";
+import AdminRoute from "./components/Admin/routes/AdminRoute.jsx";
+import EditBlog from "./components/Admin/pages/EditBlog.jsx";
 
 function App() {
   return (
@@ -48,8 +49,9 @@ function App() {
         }
       >
         <Route index element={<AdminDashboard />} />
-        <Route path="blogs" element={<ManageBlogs />} />
+        <Route path="blogs" element={<AdminBlogs />} />
         <Route path="blogs/create" element={<CreateBlog />} />
+        <Route path="blogs/edit/:id" element={<EditBlog />} />
       </Route>
 
       {/* Auth Pages */}
