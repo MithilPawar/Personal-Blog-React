@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import { Pencil, Trash2, Eye, EyeOff } from "lucide-react";
 import API from "../../../api/axios";
 
 const AdminBlogs = () => {
@@ -9,6 +10,9 @@ const AdminBlogs = () => {
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [sortBy, setSortBy] = useState("createdAt");
+  const [order, setOrder] = useState("desc");
+
   const debounceRef = useRef(null);
 
   const fetchBlogs = async () => {
@@ -16,14 +20,10 @@ const AdminBlogs = () => {
       setLoading(true);
 
       const params = {};
-
-      if (statusFilter !== "ALL") {
-        params.status = statusFilter;
-      }
-
-      if (searchTerm.trim() !== "") {
-        params.search = searchTerm.trim();
-      }
+      if (statusFilter !== "ALL") params.status = statusFilter;
+      if (searchTerm.trim()) params.search = searchTerm.trim();
+      params.sortBy = sortBy;
+      params.order = order;
 
       const res = await API.get("/admin/blogs", { params });
       setBlogs(res.data);
@@ -34,13 +34,11 @@ const AdminBlogs = () => {
     }
   };
 
-  // 🔥 Debounced search
   useEffect(() => {
     debounceRef.current = setTimeout(fetchBlogs, 500);
     return () => clearTimeout(debounceRef.current);
-  }, [statusFilter, searchTerm]);
+  }, [statusFilter, searchTerm, sortBy, order]);
 
-  // 🔥 Enter key search (instant)
   const handleSearchKeyDown = (e) => {
     if (e.key === "Enter") {
       clearTimeout(debounceRef.current);
@@ -48,7 +46,13 @@ const AdminBlogs = () => {
     }
   };
 
-  const togglePublish = async (id) => {
+  const togglePublish = async (id, isPublished) => {
+    const message = isPublished
+      ? "Are you sure you want to unpublish this blog?"
+      : "Are you sure you want to publish this blog?";
+
+    if (!window.confirm(message)) return;
+
     await API.patch(`/admin/blogs/${id}/publish`);
     fetchBlogs();
   };
@@ -60,101 +64,153 @@ const AdminBlogs = () => {
   };
 
   return (
-    <div>
+    <div className="bg-gray-50 p-6 rounded-xl">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Manage Blogs</h2>
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800">Manage Blogs</h2>
+          <p className="text-sm text-gray-500">
+            Create, publish and manage blog posts
+          </p>
+        </div>
+
         <Link
           to="/admin/blogs/create"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+          className="bg-blue-600 hover:bg-blue-700 transition text-white px-4 py-2 rounded-lg shadow"
         >
           + Create Blog
         </Link>
       </div>
 
       {/* Filters */}
-      <div className="flex gap-4 mb-4 items-center">
-        {/* Search */}
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search by title..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyDown={handleSearchKeyDown}
-            className="border px-3 py-2 rounded-lg w-64 pr-10"
-          />
+      <div className="bg-white p-4 rounded-lg shadow mb-5 flex flex-wrap gap-4 items-center">
+        <input
+          type="text"
+          placeholder="Search blog title..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={handleSearchKeyDown}
+          className="border rounded-lg px-3 py-2 w-64 focus:ring-2 focus:ring-blue-500 outline-none"
+        />
 
-          {loading && (
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
-              ⏳
-            </span>
-          )}
-        </div>
-
-        {/* Status Filter */}
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="border px-3 py-2 rounded-lg"
+          className="border rounded-lg px-3 py-2"
         >
-          <option value="ALL">All</option>
+          <option value="ALL">All Status</option>
           <option value="PUBLISHED">Published</option>
           <option value="DRAFT">Draft</option>
+        </select>
+
+        <select
+          value={`${sortBy}-${order}`}
+          onChange={(e) => {
+            const [sb, ord] = e.target.value.split("-");
+            setSortBy(sb);
+            setOrder(ord);
+          }}
+          className="border rounded-lg px-3 py-2"
+        >
+          <option value="createdAt-desc">Newest First</option>
+          <option value="createdAt-asc">Oldest First</option>
+          <option value="updatedAt-desc">Recently Updated</option>
         </select>
       </div>
 
       {/* Table */}
-      <table className="w-full bg-white rounded-lg shadow">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="p-3 text-left">Title</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {blogs.length === 0 ? (
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <table className="w-full">
+          <thead className="bg-gray-100 text-sm text-gray-600">
             <tr>
-              <td colSpan="3" className="text-center p-4 text-gray-500">
-                No blogs found
-              </td>
+              <th className="p-3 text-left">Title</th>
+              <th className="text-center">Status</th>
+              <th className="text-center">Created</th>
+              <th className="text-center">Actions</th>
             </tr>
-          ) : (
-            blogs.map((blog) => (
-              <tr key={blog.id} className="border-t">
-                <td className="p-3">{blog.title}</td>
-                <td className="text-center">
-                  {blog.published ? "Published" : "Draft"}
-                </td>
-                <td className="p-3 flex gap-3">
-                  <Link
-                    to={`/admin/blogs/edit/${blog.id}`}
-                    className="text-blue-600"
-                  >
-                    Edit
-                  </Link>
+          </thead>
 
-                  <button
-                    onClick={() => togglePublish(blog.id)}
-                    className="text-green-600"
-                  >
-                    {blog.published ? "Unpublish" : "Publish"}
-                  </button>
-
-                  <button
-                    onClick={() => deleteBlog(blog.id)}
-                    className="text-red-600"
-                  >
-                    Delete
-                  </button>
+          <tbody>
+            {blogs.length === 0 ? (
+              <tr>
+                <td colSpan="4" className="text-center p-6 text-gray-500">
+                  No blogs found
                 </td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              blogs.map((blog) => (
+                <tr
+                  key={blog.id}
+                  className="border-t hover:bg-gray-50 transition"
+                >
+                  <td className="p-3 font-medium">{blog.title}</td>
+
+                  <td className="text-center">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        blog.published
+                          ? "bg-green-100 text-green-700"
+                          : "bg-yellow-100 text-yellow-700"
+                      }`}
+                    >
+                      {blog.published ? "Published" : "Draft"}
+                    </span>
+                  </td>
+
+                  <td className="text-center text-sm text-gray-500">
+                    {new Date(blog.createdAt).toLocaleDateString()}
+                  </td>
+
+                  <td className="p-3 flex justify-center gap-4">
+                    {/* Edit */}
+                    <Link
+                      to={`/admin/blogs/edit/${blog.id}`}
+                      className="text-blue-600 hover:text-blue-800"
+                      title="Edit"
+                    >
+                      <Pencil size={18} />
+                    </Link>
+
+                    {/* Publish / Unpublish */}
+                    <button
+                      onClick={() => togglePublish(blog.id, blog.published)}
+                      className="p-2 rounded-full text-green-600 hover:bg-green-100 transition cursor-pointer"
+                      title={blog.published ? "Unpublish" : "Publish"}
+                    >
+                      {blog.published ? (
+                        <EyeOff size={18} />
+                      ) : (
+                        <Eye size={18} />
+                      )}
+                    </button>
+
+                    {/* Delete */}
+                    <button
+                      onClick={() => deleteBlog(blog.id)}
+                      disabled={blog.published}
+                      className={`
+    p-2 rounded-full transition
+    ${
+      blog.published
+        ? "text-gray-400 cursor-not-allowed opacity-60"
+        : "text-red-600 hover:bg-red-100 cursor-pointer"
+    }
+  `}
+                      title={
+                        blog.published
+                          ? "Cannot delete a published blog"
+                          : "Delete"
+                      }
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
