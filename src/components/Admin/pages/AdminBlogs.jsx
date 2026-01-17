@@ -162,6 +162,15 @@ const AdminBlogs = () => {
                   </td>
 
                   <td className="p-3 flex justify-center gap-4">
+                    {/* Preview */}
+                    <Link
+                      to={`/admin/blogs/preview/${blog.id}`}
+                      className="p-2 rounded-full text-gray-600 hover:bg-gray-200 transition cursor-pointer"
+                      title="Preview"
+                    >
+                      <Eye size={18} />
+                    </Link>
+
                     {/* Edit */}
                     <Link
                       to={`/admin/blogs/edit/${blog.id}`}
@@ -188,14 +197,11 @@ const AdminBlogs = () => {
                     <button
                       onClick={() => deleteBlog(blog.id)}
                       disabled={blog.published}
-                      className={`
-    p-2 rounded-full transition
-    ${
-      blog.published
-        ? "text-gray-400 cursor-not-allowed opacity-60"
-        : "text-red-600 hover:bg-red-100 cursor-pointer"
-    }
-  `}
+                      className={`p-2 rounded-full transition ${
+                        blog.published
+                          ? "text-gray-400 cursor-not-allowed opacity-60"
+                          : "text-red-600 hover:bg-red-100 cursor-pointer"
+                      }`}
                       title={
                         blog.published
                           ? "Cannot delete a published blog"
