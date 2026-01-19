@@ -15,8 +15,8 @@ const AdminBlogPreview = () => {
       try {
         const [blogRes, commentsRes, countRes] = await Promise.all([
           API.get(`/admin/blogs/${id}`),
-          API.get(`/admin/blogs/${id}/comments/recent`),
-          API.get(`/admin/blogs/${id}/comments/count`),
+          API.get(`/admin/blogs/comment/${id}/comments/recent`),
+          API.get(`/admin/blogs/comment/${id}/comments/count`),
         ]);
 
         setBlog(blogRes.data);
@@ -111,6 +111,12 @@ const AdminBlogPreview = () => {
             ))}
           </ul>
         )}
+        <Link
+        to={`/admin/blogs/${id}/comments`}
+        className="text-blue-600 text-sm hover:underline"
+      >
+        View all comments →
+      </Link>
       </div>
     </div>
   );

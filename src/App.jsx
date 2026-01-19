@@ -15,6 +15,7 @@ import CreateBlog from "./components/Admin/pages/CreateBlog.jsx";
 import AdminRoute from "./components/Admin/routes/AdminRoute.jsx";
 import EditBlog from "./components/Admin/pages/EditBlog.jsx";
 import AdminBlogPreview from "./components/Admin/pages/AdminBlogPreview.jsx";
+import AdminBlogComments from "./components/Admin/pages/AdminBlogComments.jsx";
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
         <Route path="blogs/create" element={<CreateBlog />} />
         <Route path="blogs/edit/:id" element={<EditBlog />} />
         <Route path="/admin/blogs/preview/:id" element={<AdminBlogPreview />} />
+        <Route path="/admin/blogs/:id/comments" element={<AdminBlogComments />} />
       </Route>
 
       {/* Auth Pages */}
