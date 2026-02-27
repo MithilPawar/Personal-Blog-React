@@ -1,82 +1,58 @@
+import PageHero from "../components/ui/PageHero";
+import SurfaceCard from "../components/ui/SurfaceCard";
+
 const About = () => {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
-      {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl sm:text-5xl font-extrabold mb-3
-          bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600
-          bg-clip-text text-transparent">
-          Lambda Life
-        </h1>
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 md:py-10">
+      {/* REVIEW NOTE: Wide hero + content grid to match BlogDetails page proportions. */}
+      <PageHero
+        title="Lambda Life"
+        subtitle="Sharing knowledge, learning by building, and growing together."
+      />
 
-        <p className="text-gray-600 text-lg">
-          Sharing knowledge, learning by building, and growing together.
-        </p>
-      </div>
+      <div className="grid gap-6 lg:grid-cols-12">
+        <section className="space-y-6 lg:col-span-8">
+          <SurfaceCard>
+            <h2 className="text-2xl font-semibold text-gray-900">About this blog</h2>
+            <p className="mt-4 text-base leading-relaxed text-gray-700 md:text-lg">
+              Hi, I’m <span className="font-semibold text-gray-900">Mithil Pawar</span> 👋 This blog is my personal space where I
+              share what I learn while building real-world web applications.
+            </p>
+            <p className="mt-4 text-base leading-relaxed text-gray-700 md:text-lg">
+              The goal of this platform is simple — to document my journey as a developer and help others understand concepts
+              through practical, hands-on examples.
+            </p>
+          </SurfaceCard>
 
-      {/* Content Wrapper */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 space-y-10">
-
-        {/* Intro Section */}
-        <section>
-          <p className="text-lg text-gray-700 mb-4 leading-relaxed">
-            Hi, I’m{" "}
-            <span className="font-semibold text-gray-900">
-              Mithil Pawar
-            </span>{" "}
-            👋  
-            This blog is my personal space where I share what I learn while
-            building real-world web applications.
-          </p>
-
-          <p className="text-lg text-gray-700 leading-relaxed">
-            The goal of this platform is simple — to document my journey as a
-            developer and help others understand concepts through practical,
-            hands-on examples.
-          </p>
+          <SurfaceCard>
+            <h2 className="text-2xl font-semibold text-gray-900">What You’ll Find Here</h2>
+            <ul className="mt-5 grid gap-3 text-gray-700 sm:grid-cols-2">
+              <li className="rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">⚛️ React & Frontend Development</li>
+              <li className="rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">☕ Spring Boot & REST APIs</li>
+              <li className="rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">🔐 Authentication & Security</li>
+              <li className="rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">🧠 Core Computer Science Concepts</li>
+              <li className="rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 sm:col-span-2">🚀 Full-stack Project Walkthroughs</li>
+            </ul>
+          </SurfaceCard>
         </section>
 
-        {/* What This Blog Covers */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-5 text-gray-900">
-            What You’ll Find Here
-          </h2>
+        <aside className="space-y-6 lg:col-span-4">
+          <SurfaceCard padding="sm">
+            <h3 className="text-xl font-semibold text-gray-900">My Approach</h3>
+            <p className="mt-3 text-sm leading-relaxed text-gray-700 md:text-base">
+              I strongly believe in learning by building and writing clean, maintainable code. Every article here is written
+              with clarity in mind, especially for beginners who want practical, easy-to-follow guidance.
+            </p>
+          </SurfaceCard>
 
-          <ul className="grid sm:grid-cols-2 gap-4 text-gray-700">
-            <li className="flex items-center gap-2">⚛️ React & Frontend Development</li>
-            <li className="flex items-center gap-2">☕ Spring Boot & REST APIs</li>
-            <li className="flex items-center gap-2">🔐 Authentication & Security</li>
-            <li className="flex items-center gap-2">🧠 Core Computer Science Concepts</li>
-            <li className="flex items-center gap-2">🚀 Full-stack Project Walkthroughs</li>
-          </ul>
-        </section>
-
-        {/* Philosophy */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-4 text-gray-900">
-            My Approach
-          </h2>
-
-          <p className="text-lg text-gray-700 leading-relaxed">
-            I strongly believe in learning by building and writing clean,
-            maintainable code. Every article here is written with clarity in
-            mind, especially for beginners who want to understand how things
-            work behind the scenes.
-          </p>
-        </section>
-
-        {/* Call to Action */}
-        <section className="text-center pt-4 border-t border-gray-100">
-          <p className="text-lg text-gray-700 mb-3">
-            If you enjoy the content, feel free to explore the blog, leave
-            comments, and share your thoughts.
-          </p>
-
-          <p className="text-lg font-medium text-gray-900">
-            Happy learning! 🚀
-          </p>
-        </section>
-
+          <SurfaceCard className="border-blue-100 bg-blue-50" padding="sm">
+            <h3 className="text-xl font-semibold text-blue-900">Let’s Keep Learning</h3>
+            <p className="mt-3 text-sm leading-relaxed text-blue-800 md:text-base">
+              If you enjoy the content, explore the blog, leave comments, and share your thoughts.
+            </p>
+            <p className="mt-4 text-base font-semibold text-blue-900">Happy learning! 🚀</p>
+          </SurfaceCard>
+        </aside>
       </div>
     </div>
   );

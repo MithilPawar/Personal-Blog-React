@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Pencil, Trash2, Eye, EyeOff } from "lucide-react";
 import API from "../../../api/axios";
+import StatusAlert from "../../ui/StatusAlert";
 
 const AdminBlogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -161,7 +162,7 @@ const AdminBlogs = () => {
       </div>
 
       {error && (
-        <div className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <StatusAlert variant="error" className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           {/* REVIEW NOTE: Actionable error state avoids dead-end admin screens. */}
           <p className="text-sm text-red-700">{error}</p>
           <button
@@ -171,7 +172,7 @@ const AdminBlogs = () => {
           >
             Retry
           </button>
-        </div>
+        </StatusAlert>
       )}
 
       {/* Table */}
@@ -189,14 +190,16 @@ const AdminBlogs = () => {
           <tbody>
             {loading && blogs.length === 0 ? (
               <tr>
-                <td colSpan="4" className="text-center p-6 text-gray-500">
-                  Loading blogs...
+                <td colSpan="4" className="p-6">
+                  <StatusAlert className="text-center">Loading blogs...</StatusAlert>
                 </td>
               </tr>
             ) : blogs.length === 0 ? (
               <tr>
-                <td colSpan="4" className="text-center p-6 text-gray-500">
-                  No blogs found
+                <td colSpan="4" className="p-6">
+                  <StatusAlert className="border-gray-200 bg-gray-50 text-center text-gray-600">
+                    No blogs found
+                  </StatusAlert>
                 </td>
               </tr>
             ) : (

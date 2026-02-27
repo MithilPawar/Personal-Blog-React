@@ -3,6 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import axios from "../api/axios";
 import Loader from "../components/Loader";
 import { useAuth } from "../contexts/AuthContext";
+import SurfaceCard from "../components/ui/SurfaceCard";
+import StatusAlert from "../components/ui/StatusAlert";
 
 import {
   HandThumbUpIcon as LikeOutline,
@@ -89,7 +91,7 @@ const BlogDetails = () => {
   if (error) {
     return (
       <div className="min-h-[60vh] flex justify-center items-center px-4">
-        <div className="w-full max-w-xl rounded-2xl border border-red-200 bg-red-50 p-6 text-center">
+        <SurfaceCard className="w-full max-w-xl border-red-200 bg-red-50 text-center" padding="sm">
           {/* REVIEW NOTE: Error state provides clear next actions instead of dead-end text. */}
           <p className="text-lg font-semibold text-red-700">Unable to open this blog</p>
           <p className="text-sm text-red-600 mt-1">{error}</p>
@@ -109,7 +111,7 @@ const BlogDetails = () => {
               Back to Blogs
             </Link>
           </div>
-        </div>
+        </SurfaceCard>
       </div>
     );
   }
@@ -207,20 +209,20 @@ const BlogDetails = () => {
               </button>
             </form>
           ) : (
-            <p className="mb-5 text-sm text-gray-600 bg-gray-50 rounded-xl px-3 py-3">
+            <StatusAlert className="mb-5 text-gray-600 bg-gray-50 border-gray-200">
               Please{" "}
               <Link to="/login" className="text-blue-600 underline">
                 login
               </Link>{" "}
               to comment.
-            </p>
+            </StatusAlert>
           )}
 
           {comments.length === 0 ? (
-            <div className="text-gray-600 bg-gray-50 rounded-xl px-4 py-6 text-center text-sm border border-dashed border-gray-300">
+            <SurfaceCard className="text-gray-600 bg-gray-50 text-center text-sm border-dashed border-gray-300 px-4 py-6" padding="sm">
               <p className="font-medium text-gray-700">No comments yet</p>
               <p className="mt-1">Be the first one to start the conversation.</p>
-            </div>
+            </SurfaceCard>
           ) : (
             <div className="space-y-3 max-h-[560px] overflow-auto pr-1">
               {/* REVIEW NOTE: Scrollable comment panel keeps long discussions tidy on desktop. */}

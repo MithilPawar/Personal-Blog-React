@@ -1,13 +1,9 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import API from "../../../api/axios";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import SurfaceCard from "../../ui/SurfaceCard";
+import StatusAlert from "../../ui/StatusAlert";
+
+const BlogsOverviewChart = lazy(() => import("../components/BlogsOverviewChart.jsx"));
 
 const AdminDashboard = () => {
   const [blogs, setBlogs] = useState([]);
@@ -34,15 +30,15 @@ const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-xl border border-gray-100 p-6 text-gray-600">
+      <SurfaceCard className="text-gray-600" padding="sm">
         Loading dashboard...
-      </div>
+      </SurfaceCard>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-xl p-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <StatusAlert variant="error" className="flex flex-col gap-3 p-6 sm:flex-row sm:items-center sm:justify-between">
         {/* REVIEW NOTE: Retry button keeps dashboard recoverable after transient API errors. */}
         <p className="text-red-700 text-sm">{error}</p>
         <button
@@ -52,7 +48,7 @@ const AdminDashboard = () => {
         >
           Retry
         </button>
-      </div>
+      </StatusAlert>
     );
   }
 
@@ -95,14 +91,13 @@ const AdminDashboard = () => {
       <div className="bg-white p-6 rounded-xl shadow">
         <h3 className="font-semibold mb-4">Blogs Overview</h3>
 
-        <ResponsiveContainer width="100%" height={260}>
-          <BarChart data={chartData}>
-            <XAxis dataKey="name" />
-            <YAxis allowDecimals={false} />
-            <Tooltip />
-            <Bar dataKey="count" fill="#3b82f6" radius={[6, 6, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+        <Suspense
+          fallback={
+            <StatusAlert className="text-gray-600">Loading chart...</StatusAlert>
+          }
+        >
+          <BlogsOverviewChart data={chartData} />
+        </Suspense>
       </div>
 
       {/* Recent Blogs */}
@@ -110,7 +105,7 @@ const AdminDashboard = () => {
         <h3 className="font-semibold mb-4">Recently Created Blogs</h3>
 
         {recentBlogs.length === 0 ? (
-          <p className="text-sm text-gray-500">No blogs yet</p>
+          <StatusAlert className="border-gray-200 bg-gray-50 text-gray-600">No blogs yet</StatusAlert>
         ) : (
           <ul className="space-y-3">
             {recentBlogs.map((blog) => (
@@ -155,7 +150,9 @@ const AdminDashboard = () => {
           ))}
 
         {blogs.length === 0 && (
-          <p className="text-sm text-gray-500">No blog data available yet.</p>
+          <StatusAlert className="border-gray-200 bg-gray-50 text-gray-600">
+            No blog data available yet.
+          </StatusAlert>
         )}
       </div>
     </div>

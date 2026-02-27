@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "../api/axios";
 import BlogCard from "../components/BlogCard";
 import Loader from "../components/Loader";
+import SurfaceCard from "../components/ui/SurfaceCard";
+import StatusAlert from "../components/ui/StatusAlert";
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -53,7 +55,7 @@ const Blogs = () => {
 
       <section className="bg-white/70 border border-gray-100 rounded-2xl p-4 sm:p-6 shadow-sm">
       {error && (
-        <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <StatusAlert variant="error" className="mb-6 flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
           {/* REVIEW NOTE: Actionable error state with retry improves perceived reliability. */}
           <p className="text-sm text-red-700">{error}</p>
           <button
@@ -63,15 +65,15 @@ const Blogs = () => {
           >
             Retry
           </button>
-        </div>
+        </StatusAlert>
       )}
 
       {/* BLOG LIST */}
       {blogs.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 px-6 py-10 text-center">
+        <SurfaceCard className="border-dashed border-gray-300 bg-gray-50 px-6 py-10 text-center" padding="sm">
           <p className="text-lg font-semibold text-gray-800">No blogs found</p>
           <p className="text-sm text-gray-600 mt-1">Please check back later for fresh posts.</p>
-        </div>
+        </SurfaceCard>
       ) : (
         <>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">

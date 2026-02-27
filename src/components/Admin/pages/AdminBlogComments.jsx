@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import API from "../../../api/axios";
+import StatusAlert from "../../ui/StatusAlert";
 
 const AdminBlogComments = () => {
   const { id } = useParams();
@@ -66,7 +67,7 @@ const AdminBlogComments = () => {
       </div>
 
       {error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <StatusAlert variant="error" className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           {/* REVIEW NOTE: Retry keeps moderation workflow resilient during request failures. */}
           <p className="text-sm text-red-700">{error}</p>
           <button
@@ -76,19 +77,21 @@ const AdminBlogComments = () => {
           >
             Retry
           </button>
-        </div>
+        </StatusAlert>
       )}
 
       {/* Comments List */}
       <div className="bg-white rounded-xl shadow divide-y">
         {loading ? (
-          <p className="p-6 text-center text-gray-500">
-            Loading comments...
-          </p>
+          <div className="p-6">
+            <StatusAlert className="text-center">Loading comments...</StatusAlert>
+          </div>
         ) : comments.length === 0 ? (
-          <p className="p-6 text-gray-500 text-center">
-            No comments available on this page.
-          </p>
+          <div className="p-6">
+            <StatusAlert className="border-gray-200 bg-gray-50 text-center text-gray-600">
+              No comments available on this page.
+            </StatusAlert>
+          </div>
         ) : (
           comments.map((c) => (
             <div
