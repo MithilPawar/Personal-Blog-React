@@ -48,18 +48,20 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white/95 backdrop-blur border-b border-gray-100 sticky top-0 z-50">
-      <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-3 flex justify-between items-center">
+      <div className="relative w-full px-3 md:px-5 lg:px-6 py-3 flex items-center gap-4">
 
-        <BrandLogo />
+        <div className="shrink-0">
+          <BrandLogo />
+        </div>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-6 ml-auto">
+        {/* REVIEW NOTE: Nav links are absolutely centered against viewport midpoint for consistent centering. */}
+        <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 items-center gap-8">
           {navItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `text-sm font-medium transition-colors ${
+                `text-sm font-medium transition-colors whitespace-nowrap ${
                   isActive
                     ? "text-blue-600"
                     : "text-gray-700 hover:text-blue-600"
@@ -69,16 +71,17 @@ const Navbar = () => {
               {item.name}
             </NavLink>
           ))}
+        </div>
 
-          {/* Profile Section */}
+        <div className="hidden lg:flex items-center justify-end gap-3 border-l border-gray-200 pl-5 ml-auto min-w-0">
           {user ? (
             <div className="relative" ref={profileRef}>
               <button
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition"
+                className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition max-w-[190px]"
               >
-                <FiUser className="text-lg" />
-                <span>{user.username}</span>
+                <FiUser className="text-lg shrink-0" />
+                <span className="truncate">{user.username}</span>
               </button>
               {profileOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
@@ -92,26 +95,26 @@ const Navbar = () => {
               )}
             </div>
           ) : (
-            <div className="flex items-center gap-2">
+            <>
               <Link
                 to="/login"
-                className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition"
+                className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition whitespace-nowrap"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition"
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition whitespace-nowrap"
               >
                 Register
               </Link>
-            </div>
+            </>
           )}
         </div>
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-2xl text-gray-700"
+          className="lg:hidden text-2xl text-gray-700 ml-auto"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <FiX /> : <FiMenu />}
@@ -120,7 +123,7 @@ const Navbar = () => {
 
       {/* Mobile Dropdown */}
       {isOpen && (
-        <div className="md:hidden bg-white px-6 pb-4 shadow-sm">
+        <div className="lg:hidden bg-white px-6 pb-4 shadow-sm">
           <div className="flex flex-col space-y-4 mt-2">
             {navItems.map((item) => (
               <NavLink

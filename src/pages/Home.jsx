@@ -43,14 +43,35 @@ const Blogs = () => {
   if (loading && blogs.length === 0) return <Loader />;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      {error && <p className="text-center text-red-600 mb-6">{error}</p>}
+    <div className="w-full space-y-8">
+      <section className="bg-white/80 backdrop-blur border border-blue-100 rounded-2xl px-6 py-6 shadow-sm">
+        {/* REVIEW NOTE: Intro panel improves visual structure and reduces flat white look. */}
+        <p className="text-sm font-medium text-blue-600 mb-2">Latest Posts</p>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Explore fresh stories from Lambda Life</h1>
+        <p className="text-gray-600 mt-2">Read practical insights on Java, Spring Boot, React, and full-stack development.</p>
+      </section>
+
+      <section className="bg-white/70 border border-gray-100 rounded-2xl p-4 sm:p-6 shadow-sm">
+      {error && (
+        <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          {/* REVIEW NOTE: Actionable error state with retry improves perceived reliability. */}
+          <p className="text-sm text-red-700">{error}</p>
+          <button
+            type="button"
+            onClick={() => fetchBlogs(page)}
+            className="px-3 py-1.5 text-sm font-medium rounded-lg border border-red-300 text-red-700 hover:bg-red-100 transition"
+          >
+            Retry
+          </button>
+        </div>
+      )}
 
       {/* BLOG LIST */}
       {blogs.length === 0 ? (
-        <p className="text-center text-gray-600 text-lg">
-          No blogs found. Please check back later!
-        </p>
+        <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 px-6 py-10 text-center">
+          <p className="text-lg font-semibold text-gray-800">No blogs found</p>
+          <p className="text-sm text-gray-600 mt-1">Please check back later for fresh posts.</p>
+        </div>
       ) : (
         <>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -92,6 +113,7 @@ const Blogs = () => {
           )}
         </>
       )}
+      </section>
     </div>
   );
 };

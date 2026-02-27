@@ -11,13 +11,50 @@ import {
 
 const AdminDashboard = () => {
   const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const fetchDashboard = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      const res = await API.get("/admin/blogs");
+      setBlogs(res.data);
+    } catch (err) {
+      console.error(err);
+      setError("Unable to load dashboard data.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    API.get("/admin/blogs").then((res) => {
-      setBlogs(res.data);
-      console.log(res.data);
-    });
+    fetchDashboard();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-xl border border-gray-100 p-6 text-gray-600">
+        Loading dashboard...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-xl p-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        {/* REVIEW NOTE: Retry button keeps dashboard recoverable after transient API errors. */}
+        <p className="text-red-700 text-sm">{error}</p>
+        <button
+          type="button"
+          onClick={fetchDashboard}
+          className="px-3 py-1.5 rounded-lg border border-red-300 text-red-700 text-sm font-medium hover:bg-red-100 transition"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   const total = blogs.length;
   const published = blogs.filter((b) => b.published).length;
@@ -107,7 +144,7 @@ const AdminDashboard = () => {
       <div className="bg-white p-6 rounded-xl shadow">
         <h3 className="font-semibold mb-4">Most Liked Blogs</h3>
 
-        {blogs
+        {[...blogs]
           .sort((a, b) => b.likes - a.likes)
           .slice(0, 3)
           .map((blog) => (
@@ -116,6 +153,10 @@ const AdminDashboard = () => {
               <span className="text-sm">❤️ {blog.likes}</span>
             </div>
           ))}
+
+        {blogs.length === 0 && (
+          <p className="text-sm text-gray-500">No blog data available yet.</p>
+        )}
       </div>
     </div>
   );

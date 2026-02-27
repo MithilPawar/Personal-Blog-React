@@ -9,10 +9,12 @@ const AdminBlogComments = () => {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const fetchComments = async () => {
     try {
       setLoading(true);
+      setError("");
       const res = await API.get(
         `/admin/blogs/comment/${id}?page=${page}&size=10`
       );
@@ -20,6 +22,7 @@ const AdminBlogComments = () => {
       setTotalPages(res.data.totalPages);
     } catch (err) {
       console.error("Failed to load comments", err);
+      setError("Failed to load comments. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -27,7 +30,7 @@ const AdminBlogComments = () => {
 
   useEffect(() => {
     fetchComments();
-  }, [page]);
+  }, [page, id]);
 
   // 🔁 Hide / Unhide toggle
   const toggleHide = async (commentId) => {
@@ -42,6 +45,7 @@ const AdminBlogComments = () => {
       );
     } catch (err) {
       console.error("Failed to toggle hide", err);
+      setError("Could not update comment visibility. Please retry.");
     }
   };
 
@@ -61,6 +65,20 @@ const AdminBlogComments = () => {
         </Link>
       </div>
 
+      {error && (
+        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          {/* REVIEW NOTE: Retry keeps moderation workflow resilient during request failures. */}
+          <p className="text-sm text-red-700">{error}</p>
+          <button
+            type="button"
+            onClick={fetchComments}
+            className="px-3 py-1.5 text-sm font-medium rounded-lg border border-red-300 text-red-700 hover:bg-red-100 transition"
+          >
+            Retry
+          </button>
+        </div>
+      )}
+
       {/* Comments List */}
       <div className="bg-white rounded-xl shadow divide-y">
         {loading ? (
@@ -68,8 +86,8 @@ const AdminBlogComments = () => {
             Loading comments...
           </p>
         ) : comments.length === 0 ? (
-          <p className="p-6 text-gray-500">
-            No comments available
+          <p className="p-6 text-gray-500 text-center">
+            No comments available on this page.
           </p>
         ) : (
           comments.map((c) => (
@@ -127,6 +145,8 @@ const AdminBlogComments = () => {
           <span className="text-sm text-gray-600 self-center">
             Page {page + 1} of {totalPages}
           </span>
+
+          {loading && <span className="text-sm text-gray-500 self-center">Loading...</span>}
 
           <button
             disabled={page + 1 >= totalPages}

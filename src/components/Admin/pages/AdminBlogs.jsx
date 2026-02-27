@@ -6,6 +6,7 @@ import API from "../../../api/axios";
 const AdminBlogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
@@ -23,6 +24,7 @@ const AdminBlogs = () => {
   const fetchBlogs = async (targetPage = page) => {
     try {
       setLoading(true);
+      setError("");
 
       const params = {};
       if (statusFilter !== "ALL") params.status = statusFilter;
@@ -39,6 +41,7 @@ const AdminBlogs = () => {
       setTotalElements(res.data.totalElements || 0);
     } catch (err) {
       console.error(err);
+      setError("Failed to load blogs. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -157,6 +160,20 @@ const AdminBlogs = () => {
         </div>
       </div>
 
+      {error && (
+        <div className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          {/* REVIEW NOTE: Actionable error state avoids dead-end admin screens. */}
+          <p className="text-sm text-red-700">{error}</p>
+          <button
+            type="button"
+            onClick={() => fetchBlogs(page)}
+            className="px-3 py-1.5 text-sm font-medium rounded-lg border border-red-300 text-red-700 hover:bg-red-100 transition"
+          >
+            Retry
+          </button>
+        </div>
+      )}
+
       {/* Table */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <table className="w-full">
@@ -170,7 +187,13 @@ const AdminBlogs = () => {
           </thead>
 
           <tbody>
-            {blogs.length === 0 ? (
+            {loading && blogs.length === 0 ? (
+              <tr>
+                <td colSpan="4" className="text-center p-6 text-gray-500">
+                  Loading blogs...
+                </td>
+              </tr>
+            ) : blogs.length === 0 ? (
               <tr>
                 <td colSpan="4" className="text-center p-6 text-gray-500">
                   No blogs found

@@ -7,7 +7,7 @@ import {
 
 const BlogCard = ({ blog }) => {
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-lg transition-all duration-300 flex flex-col justify-between">
+    <div className="bg-white/95 border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between">
       {/* Top Section */}
       <div>
         {/* Title */}
@@ -58,7 +58,7 @@ const BlogCard = ({ blog }) => {
           {/* Read More */}
           <Link
             to={`/blog/${blog.id}`}
-            className="text-blue-600 text-sm font-medium hover:underline"
+            className="text-blue-600 text-sm font-semibold hover:underline"
           >
             Read More →
           </Link>

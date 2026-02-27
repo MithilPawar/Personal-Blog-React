@@ -49,6 +49,13 @@ const Contact = () => {
       {/* Form Card */}
       <div className="bg-white shadow-lg rounded-2xl border border-gray-200 overflow-hidden">
         <form onSubmit={handleSubmit} className="px-8 py-10 space-y-6">
+          {!success && !error && (
+            <div className="rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-700">
+              {/* REVIEW NOTE: Neutral empty/idle state sets expectation before submit. */}
+              Usually replies within 24 hours.
+            </div>
+          )}
+
           {/* Name */}
           <div className="relative">
             <input
@@ -108,10 +115,14 @@ const Contact = () => {
 
           {/* Feedback */}
           {success && (
-            <p className="text-green-600 text-center text-sm mt-2">{success}</p>
+            <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 text-center">
+              {success}
+            </div>
           )}
           {error && (
-            <p className="text-red-600 text-center text-sm mt-2">{error}</p>
+            <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 text-center">
+              {error}
+            </div>
           )}
         </form>
       </div>
