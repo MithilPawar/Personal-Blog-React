@@ -6,6 +6,9 @@ import API from "../../../api/axios";
 const AdminBlogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
 
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,9 +16,11 @@ const AdminBlogs = () => {
   const [sortBy, setSortBy] = useState("createdAt");
   const [order, setOrder] = useState("desc");
 
+  const [pageSize, setPageSize] = useState(10);
+
   const debounceRef = useRef(null);
 
-  const fetchBlogs = async () => {
+  const fetchBlogs = async (targetPage = page) => {
     try {
       setLoading(true);
 
@@ -24,9 +29,14 @@ const AdminBlogs = () => {
       if (searchTerm.trim()) params.search = searchTerm.trim();
       params.sortBy = sortBy;
       params.order = order;
+      params.page = targetPage;
+      params.size = pageSize;
 
-      const res = await API.get("/admin/blogs", { params });
-      setBlogs(res.data);
+      // REVIEW NOTE: Use new paginated endpoint to keep admin table responsive with large data.
+      const res = await API.get("/admin/blogs/paged", { params });
+      setBlogs(res.data.content || []);
+      setTotalPages(res.data.totalPages || 0);
+      setTotalElements(res.data.totalElements || 0);
     } catch (err) {
       console.error(err);
     } finally {
@@ -35,14 +45,25 @@ const AdminBlogs = () => {
   };
 
   useEffect(() => {
-    debounceRef.current = setTimeout(fetchBlogs, 500);
+    debounceRef.current = setTimeout(() => fetchBlogs(page), 500);
     return () => clearTimeout(debounceRef.current);
+  }, [statusFilter, searchTerm, sortBy, order, page, pageSize]);
+
+  useEffect(() => {
+    // REVIEW NOTE: Reset to page 1 whenever filters or sorting changes.
+    setPage(0);
   }, [statusFilter, searchTerm, sortBy, order]);
+
+  useEffect(() => {
+    // REVIEW NOTE: Reset to first page when page size changes to avoid invalid page index.
+    setPage(0);
+  }, [pageSize]);
 
   const handleSearchKeyDown = (e) => {
     if (e.key === "Enter") {
       clearTimeout(debounceRef.current);
-      fetchBlogs();
+      setPage(0);
+      fetchBlogs(0);
     }
   };
 
@@ -54,13 +75,13 @@ const AdminBlogs = () => {
     if (!window.confirm(message)) return;
 
     await API.patch(`/admin/blogs/${id}/publish`);
-    fetchBlogs();
+    fetchBlogs(page);
   };
 
   const deleteBlog = async (id) => {
     if (!window.confirm("Are you sure you want to delete this blog?")) return;
     await API.delete(`/admin/blogs/${id}`);
-    fetchBlogs();
+    fetchBlogs(page);
   };
 
   return (
@@ -116,6 +137,24 @@ const AdminBlogs = () => {
           <option value="createdAt-asc">Oldest First</option>
           <option value="updatedAt-desc">Recently Updated</option>
         </select>
+
+        <div className="flex items-center gap-2">
+          <label htmlFor="pageSize" className="text-sm text-gray-600">
+            Show
+          </label>
+          <select
+            id="pageSize"
+            value={pageSize}
+            onChange={(e) => setPageSize(Number(e.target.value))}
+            className="border rounded-lg px-3 py-2"
+          >
+            {/* REVIEW NOTE: Keep options small and practical for admin table usability. */}
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+          </select>
+          <span className="text-sm text-gray-600">per page</span>
+        </div>
       </div>
 
       {/* Table */}
@@ -216,6 +255,42 @@ const AdminBlogs = () => {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* REVIEW NOTE: Keep total count and paging controls in one footer row for faster scan. */}
+      <div className="mt-6 flex items-center justify-between gap-3">
+        <div className="text-sm text-gray-600">Total blogs: {totalElements}</div>
+
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
+              disabled={page === 0 || loading}
+              className="px-4 py-2 border rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Previous
+            </button>
+
+            <span className="text-sm text-gray-600">
+              Page {page + 1} of {totalPages}
+            </span>
+
+            {loading && (
+              // REVIEW NOTE: Show lightweight loading feedback near pagination while preserving current layout.
+              <span className="text-sm text-gray-500">Loading...</span>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setPage((prev) => Math.min(prev + 1, totalPages - 1))}
+              disabled={page >= totalPages - 1 || loading}
+              className="px-4 py-2 border rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

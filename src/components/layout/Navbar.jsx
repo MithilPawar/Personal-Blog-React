@@ -2,7 +2,21 @@ import { Link, NavLink } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { FiMenu, FiX, FiUser } from "react-icons/fi";
 import { useAuth } from "../../contexts/AuthContext";
-import logo from "../../assets/download.png";
+
+const BrandLogo = () => {
+  // REVIEW NOTE: Replaced image logo with a clean text-mark for consistent rendering across devices.
+  return (
+    <Link to="/" className="flex items-center gap-3">
+      <div className="h-9 w-9 rounded-xl bg-blue-600 text-white grid place-items-center font-bold text-sm shadow-sm">
+        LL
+      </div>
+      <div className="leading-tight">
+        <p className="text-base font-semibold text-gray-900">Lambda Life</p>
+        <p className="text-xs text-gray-500">Personal Blog</p>
+      </div>
+    </Link>
+  );
+};
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,31 +37,20 @@ const Navbar = () => {
     };
   }, []);
 
-  const navItems = user ? [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Contact", path: "/contact" },
-  ] : [];
+  // REVIEW NOTE: Keep user-facing top nav simple and consistent.
+  const navItems = user
+    ? [
+        { name: "Home", path: "/" },
+        { name: "About", path: "/about" },
+        { name: "Contact", path: "/contact" },
+      ]
+    : [{ name: "Home", path: "/" }];
 
   return (
-    <nav className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="w-full max-w-6xl px-6 py-3 flex justify-between items-center">
+    <nav className="bg-white/95 backdrop-blur border-b border-gray-100 sticky top-0 z-50">
+      <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-3 flex justify-between items-center">
 
-        {/* Logo + Text */}
-        <Link to="/" className="flex items-center space-x-2">
-          <img
-            src={logo}
-            alt="Lambda Life Logo"
-            className="h-8 w-8 object-contain"
-          />
-
-          <div className="flex flex-col leading-tight">
-            <span className="text-xl font-bold text-gray-800">Lambda</span>
-            <span className="text-xs font-medium text-blue-600 -mt-1">
-              Life
-            </span>
-          </div>
-        </Link>
+        <BrandLogo />
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6 ml-auto">
@@ -56,7 +59,7 @@ const Navbar = () => {
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `text-sm font-medium transition ${
+                `text-sm font-medium transition-colors ${
                   isActive
                     ? "text-blue-600"
                     : "text-gray-700 hover:text-blue-600"
@@ -72,9 +75,10 @@ const Navbar = () => {
             <div className="relative" ref={profileRef}>
               <button
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 transition"
+                className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition"
               >
                 <FiUser className="text-lg" />
+                <span>{user.username}</span>
               </button>
               {profileOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
@@ -88,12 +92,20 @@ const Navbar = () => {
               )}
             </div>
           ) : (
-            <Link
-              to="/login"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition"
-            >
-              Login
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                to="/login"
+                className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition"
+              >
+                Register
+              </Link>
+            </div>
           )}
         </div>
 
@@ -130,7 +142,7 @@ const Navbar = () => {
             {/* Profile Section Mobile */}
             {user ? (
               <div className="flex flex-col space-y-2">
-                <div className="text-sm font-medium text-gray-700">Profile</div>
+                <div className="text-sm font-medium text-gray-700">{user.username}</div>
                 <button
                   onClick={() => { logout(); setIsOpen(false); }}
                   className="text-sm font-medium text-gray-700 hover:text-blue-600 transition text-left"
@@ -139,13 +151,22 @@ const Navbar = () => {
                 </button>
               </div>
             ) : (
-              <Link
-                to="/login"
-                onClick={() => setIsOpen(false)}
-                className="bg-blue-600 text-white text-center px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition"
-              >
-                Login
-              </Link>
+              <>
+                <Link
+                  to="/login"
+                  onClick={() => setIsOpen(false)}
+                  className="border border-gray-300 text-gray-700 text-center px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={() => setIsOpen(false)}
+                  className="bg-blue-600 text-white text-center px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition"
+                >
+                  Register
+                </Link>
+              </>
             )}
           </div>
         </div>

@@ -17,12 +17,17 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
 
     if (token) {
-      const decoded = jwtDecode(token);
-      setUser({
-        token,
-        username: decoded.sub,
-        role: decoded.role,
-      });
+      try {
+        const decoded = jwtDecode(token);
+        setUser({
+          token,
+          username: decoded.sub,
+          role: decoded.role,
+        });
+      } catch {
+        localStorage.removeItem("token");
+        setUser(null);
+      }
     }
 
     setLoading(false);
@@ -44,7 +49,7 @@ export const AuthProvider = ({ children }) => {
       if (decoded.role === "ADMIN") {
         navigate("/admin", { replace: true });
       } else {
-        navigate("/dashboard", { replace: true });
+        navigate("/", { replace: true });
       }
 
       return { success: true };
@@ -68,6 +73,12 @@ export const AuthProvider = ({ children }) => {
         username: decoded.sub,
         role: decoded.role,
       });
+
+      if (decoded.role === "ADMIN") {
+        navigate("/admin", { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
 
       return { success: true };
     } catch (error) {

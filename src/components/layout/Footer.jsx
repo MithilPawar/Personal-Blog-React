@@ -1,4 +1,5 @@
 import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -7,10 +8,10 @@ const Footer = () => {
         
         {/* Brand / About */}
         <div>
-          <h2 className="text-xl font-semibold text-white">Mithil's Personal Blog</h2>
+          <h2 className="text-xl font-semibold text-white">Lambda Life</h2>
           <p className="mt-3 text-sm leading-6">
-            Sharing thoughts, tutorials, and experiences on Web Development, Java,
-            React, and my learning journey. Stay connected!
+            A personal space for stories, tutorials, and practical notes on
+            Java, Spring Boot, React, and full-stack development.
           </p>
         </div>
 
@@ -19,16 +20,16 @@ const Footer = () => {
           <h3 className="text-lg font-semibold text-white mb-3">Quick Links</h3>
           <ul className="space-y-2 text-sm">
             <li>
-              <a href="/" className="hover:text-white transition">Home</a>
+              <Link to="/" className="hover:text-white transition">Home</Link>
             </li>
             <li>
-              <a href="/blogs" className="hover:text-white transition">Blogs</a>
+              <Link to="/" className="hover:text-white transition">Blogs</Link>
             </li>
             <li>
-              <a href="/about" className="hover:text-white transition">About Me</a>
+              <Link to="/about" className="hover:text-white transition">About</Link>
             </li>
             <li>
-              <a href="/contact" className="hover:text-white transition">Contact</a>
+              <Link to="/contact" className="hover:text-white transition">Contact</Link>
             </li>
           </ul>
         </div>
@@ -53,7 +54,8 @@ const Footer = () => {
 
       {/* Bottom Minimal Bar */}
       <div className="border-t border-gray-700 py-4 text-center text-sm text-gray-400">
-        © {new Date().getFullYear()} Mithil’s Personal Blog • All rights reserved.
+        {/* REVIEW NOTE: Footer brand text aligned with navbar brand for consistent identity. */}
+        © {new Date().getFullYear()} Lambda Life • All rights reserved.
       </div>
     </footer>
   );

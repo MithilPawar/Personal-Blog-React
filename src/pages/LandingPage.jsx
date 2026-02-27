@@ -1,10 +1,18 @@
+import { Link } from "react-router-dom";
+
 const LandingPage = () => {
   return (
     <div className="w-full">
       {/* ---------------------- HERO SECTION ---------------------- */}
-      <section className="bg-gray-50 pt-10 pb-10 px-6 text-center">
-        <h1 className="text-5xl font-extrabold text-gray-900 mb-6 leading-snug">
-          Welcome to <span className="text-blue-600">Lambda Life</span>
+      <section className="bg-gradient-to-b from-white to-blue-50/40 pt-14 pb-12 px-6 text-center rounded-2xl border border-blue-100/60">
+        {/* REVIEW NOTE: Hero badge mirrors the new navbar logo text-mark for brand consistency. */}
+        <div className="inline-flex items-center gap-2 bg-white border border-blue-100 rounded-full px-3 py-1 text-sm text-gray-700 mb-6 shadow-sm">
+          <span className="h-6 w-6 rounded-full bg-blue-600 text-white grid place-items-center text-xs font-bold">LL</span>
+          Lambda Life
+        </div>
+
+        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-snug">
+          Build, Learn, and Share on <span className="text-blue-600">Lambda Life</span>
         </h1>
 
         <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-10">
@@ -12,27 +20,34 @@ const LandingPage = () => {
           written by creators from around the world.
         </p>
 
-        <div className="flex justify-center space-x-4">
-          <a
-            href="/"
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg text-lg font-medium hover:bg-blue-700 transition"
+        <div className="flex justify-center gap-3 flex-wrap">
+          <Link
+            to="/"
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg text-base font-medium hover:bg-blue-700 transition"
           >
             Explore Blogs
-          </a>
+          </Link>
 
-          <a
-            href="/login"
-            className="px-6 py-3 border border-gray-300 rounded-lg text-lg font-medium hover:bg-gray-200 transition"
+          <Link
+            to="/login"
+            className="px-6 py-3 border border-gray-300 rounded-lg text-base font-medium hover:bg-gray-100 transition"
           >
             Sign In
-          </a>
+          </Link>
+
+          <Link
+            to="/register"
+            className="px-6 py-3 border border-blue-200 text-blue-700 rounded-lg text-base font-medium hover:bg-blue-50 transition"
+          >
+            Create Account
+          </Link>
         </div>
 
         <div className="mt-14 flex justify-center">
           <img
             src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2"
             alt="People collaborating on ideas"
-            className="rounded-2xl shadow-xl w-full max-w-4xl h-auto"
+            className="rounded-2xl shadow-xl w-full max-w-4xl h-auto border border-gray-100"
           />
         </div>
       </section>

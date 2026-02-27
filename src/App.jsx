@@ -38,7 +38,7 @@ function App() {
         <Route path="/blog/:id" element={<BlogDetails />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/dashnoard" element={<RootPage />} />
+        <Route path="/dashboard" element={<RootPage />} />
       </Route>
 
       {/* 🔐 ADMIN AREA */}
@@ -54,8 +54,8 @@ function App() {
         <Route path="blogs" element={<AdminBlogs />} />
         <Route path="blogs/create" element={<CreateBlog />} />
         <Route path="blogs/edit/:id" element={<EditBlog />} />
-        <Route path="/admin/blogs/preview/:id" element={<AdminBlogPreview />} />
-        <Route path="/admin/blogs/:id/comments" element={<AdminBlogComments />} />
+        <Route path="blogs/preview/:id" element={<AdminBlogPreview />} />
+        <Route path="blogs/:id/comments" element={<AdminBlogComments />} />
       </Route>
 
       {/* Auth Pages */}
