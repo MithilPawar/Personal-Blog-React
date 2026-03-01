@@ -10,6 +10,7 @@ const Contact = () => {
     email: "",
     message: "",
   });
+
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
@@ -23,17 +24,30 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setLoading(true);
     setSuccess("");
     setError("");
 
     try {
       await axios.post("/contact", formData);
-      setSuccess("Thanks for reaching out! I’ll get back to you soon.");
-      setFormData({ username: "", email: "", message: "" });
+
+      setSuccess(
+        "Your message has been sent successfully. I will get back to you soon."
+      );
+
+      setFormData({
+        username: "",
+        email: "",
+        message: "",
+      });
+
     } catch (err) {
-      console.error("Contact form error:", err);
-      setError("Failed to send message. Please try again later.");
+      console.error(err);
+
+      setError(
+        "Unable to send message at the moment. Please try again later."
+      );
     } finally {
       setLoading(false);
     }
@@ -41,108 +55,214 @@ const Contact = () => {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 md:py-10">
-      {/* REVIEW NOTE: Wide two-column composition to align Contact with BlogDetails scale and spacing. */}
+
       <PageHero
-        title="Get in Touch"
-        subtitle="Have a question, feedback, or just want to say hello? 👋"
+        title="Contact"
+        subtitle="Open to software developer opportunities, collaboration, and technical discussions."
+        titleClassName="text-xl md:text-2xl font-semibold"
       />
 
       <div className="grid gap-6 lg:grid-cols-12">
+
+        {/* LEFT SECTION */}
         <aside className="space-y-6 lg:col-span-4">
-          <SurfaceCard padding="sm">
-            <h2 className="text-xl font-semibold text-gray-900">Why contact me?</h2>
-            <ul className="mt-4 space-y-3 text-sm leading-relaxed text-gray-700 md:text-base">
-              <li>• Collaboration ideas and project discussions</li>
-              <li>• Questions about React, Spring Boot, or architecture</li>
-              <li>• Feedback to improve article quality and clarity</li>
+
+          {/* WHY CONTACT */}
+          <SurfaceCard className="p-6" padding="sm">
+            <h2 className="text-xl font-semibold text-gray-900">
+              Let's Connect
+            </h2>
+
+            <p className="mt-3 text-gray-700">
+              Feel free to reach out for:
+            </p>
+
+            <ul className="mt-4 space-y-2 text-gray-700">
+
+              <li>• Software Developer opportunities</li>
+
+              <li>• Collaboration on full-stack projects</li>
+
+              <li>• Technical discussions (React, Spring Boot, APIs)</li>
+
+              <li>• Feedback or suggestions</li>
+
             </ul>
           </SurfaceCard>
 
-          <SurfaceCard className="border-blue-100 bg-blue-50" padding="sm">
-            <h2 className="text-xl font-semibold text-blue-900">Response time</h2>
-            <p className="mt-3 text-sm leading-relaxed text-blue-800 md:text-base">
-              Usually replies within 24 hours.
-            </p>
+
+          {/* CONTACT INFO */}
+          <SurfaceCard className="p-6" padding="sm">
+            <h2 className="text-xl font-semibold text-gray-900">
+              Contact Information
+            </h2>
+
+            <div className="mt-4 space-y-2 text-gray-700">
+
+              <p>
+                📧 Email:{" "}
+                <span className="font-medium">
+                  mithilpawar7044@gmail.com
+                </span>
+              </p>
+
+              <p>
+                💼 Role:{" "}
+                <span className="font-medium">
+                  Full Stack Developer
+                </span>
+              </p>
+
+              <p>
+                📍 Location:{" "}
+                <span className="font-medium">
+                  India
+                </span>
+              </p>
+
+            </div>
+
           </SurfaceCard>
+
+
+          {/* RESPONSE TIME */}
+          <SurfaceCard className="border-blue-100 bg-blue-50 p-6" padding="sm">
+
+            <h2 className="text-xl font-semibold text-blue-900">
+              Response Time
+            </h2>
+
+            <p className="mt-3 text-blue-800">
+              Typically responds within 24 hours.
+            </p>
+
+          </SurfaceCard>
+
         </aside>
 
+
+        {/* RIGHT SECTION - FORM */}
         <div className="lg:col-span-8">
-          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-            <form onSubmit={handleSubmit} className="space-y-6 px-6 py-7 md:px-8 md:py-8">
+
+          <div className="rounded-2xl border border-gray-200 bg-white shadow-sm">
+
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-6 p-6"
+            >
+
               {!success && !error && (
                 <StatusAlert>
-                  {/* REVIEW NOTE: Neutral idle state to guide users before first submit. */}
-                  Share as much context as you want and I’ll respond with practical suggestions.
+                  Send a message and I’ll respond as soon as possible.
                 </StatusAlert>
               )}
 
+
+              {/* NAME */}
               <div className="relative">
+
                 <input
                   type="text"
                   name="username"
                   value={formData.username}
                   onChange={handleChange}
-                  placeholder=" "
                   required
-                  className="peer w-full rounded-lg border border-gray-300 px-3 py-3 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-400"
+                  placeholder=" "
+                  className="peer w-full rounded-lg border border-gray-300 px-3 py-3 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                 />
-                <label className="absolute left-3 top-3 text-sm text-gray-400 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-400 peer-focus:top-0 peer-focus:text-xs peer-focus:text-blue-500">
-                  Name
+
+                <label className="absolute left-3 top-3 text-gray-400 text-sm transition-all
+                peer-focus:top-0 peer-focus:text-xs peer-focus:text-blue-500
+                peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm">
+
+                  Full Name
+
                 </label>
+
               </div>
 
+
+              {/* EMAIL */}
               <div className="relative">
+
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder=" "
                   required
-                  className="peer w-full rounded-lg border border-gray-300 px-3 py-3 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-400"
+                  placeholder=" "
+                  className="peer w-full rounded-lg border border-gray-300 px-3 py-3 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                 />
-                <label className="absolute left-3 top-3 text-sm text-gray-400 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-400 peer-focus:top-0 peer-focus:text-xs peer-focus:text-blue-500">
-                  Email
+
+                <label className="absolute left-3 top-3 text-gray-400 text-sm transition-all
+                peer-focus:top-0 peer-focus:text-xs peer-focus:text-blue-500
+                peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm">
+
+                  Email Address
+
                 </label>
+
               </div>
 
+
+              {/* MESSAGE */}
               <div className="relative">
+
                 <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
                   rows="6"
-                  placeholder=" "
                   required
-                  className="peer w-full rounded-lg border border-gray-300 px-3 py-3 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-400"
+                  placeholder=" "
+                  className="peer w-full rounded-lg border border-gray-300 px-3 py-3 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                 />
-                <label className="absolute left-3 top-3 text-sm text-gray-400 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-400 peer-focus:top-0 peer-focus:text-xs peer-focus:text-blue-500">
-                  Message
+
+                <label className="absolute left-3 top-3 text-gray-400 text-sm transition-all
+                peer-focus:top-0 peer-focus:text-xs peer-focus:text-blue-500
+                peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm">
+
+                  Your Message
+
                 </label>
+
               </div>
 
+
+              {/* BUTTON */}
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-lg bg-blue-500 py-2.5 font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
+                className="w-full rounded-lg bg-blue-600 py-3 font-medium text-white hover:bg-blue-700 transition disabled:opacity-50"
               >
-                {loading ? "Sending..." : "Send Message"}
+                {loading ? "Sending Message..." : "Send Message"}
               </button>
 
+
+              {/* SUCCESS */}
               {success && (
                 <StatusAlert variant="success" className="text-center">
                   {success}
                 </StatusAlert>
               )}
+
+
+              {/* ERROR */}
               {error && (
                 <StatusAlert variant="error" className="text-center">
                   {error}
                 </StatusAlert>
               )}
+
             </form>
+
           </div>
+
         </div>
+
       </div>
+
     </div>
   );
 };

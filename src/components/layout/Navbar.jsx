@@ -78,7 +78,7 @@ const Navbar = () => {
             <div className="relative" ref={profileRef}>
               <button
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition max-w-[190px]"
+                className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 rounded-md px-2 py-1.5 transition max-w-[190px] cursor-pointer"
               >
                 <FiUser className="text-lg shrink-0" />
                 <span className="truncate">{user.username}</span>
