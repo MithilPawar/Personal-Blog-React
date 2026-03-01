@@ -6,7 +6,7 @@ const About = () => {
     <div className="mx-auto w-full max-w-7xl px-4 py-8 md:py-10">
       {/* REVIEW NOTE: Wide hero + content grid to match BlogDetails page proportions. */}
       <PageHero
-        title="Lambda Life"
+        title="Personal Blog"
         subtitle="Sharing knowledge, learning by building, and growing together."
       />
 

@@ -8,10 +8,10 @@ const BrandLogo = () => {
   return (
     <Link to="/" className="flex items-center gap-3">
       <div className="h-9 w-9 rounded-xl bg-blue-600 text-white grid place-items-center font-bold text-sm shadow-sm">
-        LL
+        PB
       </div>
       <div className="leading-tight">
-        <p className="text-base font-semibold text-gray-900">Lambda Life</p>
+        <p className="text-base font-semibold text-gray-900">Personal Blog</p>
         <p className="text-xs text-gray-500">Personal Blog</p>
       </div>
     </Link>

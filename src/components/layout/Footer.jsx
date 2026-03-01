@@ -8,7 +8,7 @@ const Footer = () => {
         
         {/* Brand / About */}
         <div>
-          <h2 className="text-xl font-semibold text-white">Lambda Life</h2>
+          <h2 className="text-xl font-semibold text-white">Personal Blog</h2>
           <p className="mt-3 text-sm leading-6">
             A personal space for stories, tutorials, and practical notes on
             Java, Spring Boot, React, and full-stack development.
@@ -55,7 +55,7 @@ const Footer = () => {
       {/* Bottom Minimal Bar */}
       <div className="border-t border-gray-700 py-4 text-center text-sm text-gray-400">
         {/* REVIEW NOTE: Footer brand text aligned with navbar brand for consistent identity. */}
-        © {new Date().getFullYear()} Lambda Life • All rights reserved.
+        © {new Date().getFullYear()} Personal Blog • All rights reserved.
       </div>
     </footer>
   );

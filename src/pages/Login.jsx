@@ -27,13 +27,13 @@ const Login = () => {
   return (
     <div className="min-h-[70vh] flex items-center justify-center bg-gradient-to-b from-blue-50/60 via-white to-blue-100/40 px-4 py-10">
       <div className="bg-white/95 backdrop-blur p-8 rounded-2xl shadow-md border border-blue-100/60 w-full max-w-md">
-        {/* REVIEW NOTE: Reuse LL badge pattern for auth-page brand consistency. */}
+        {/* REVIEW NOTE: Reuse PB badge pattern for auth-page brand consistency. */}
         <div className="flex flex-col items-center mb-6">
           <div className="h-10 w-10 rounded-xl bg-blue-600 text-white grid place-items-center font-bold text-sm shadow-sm mb-3">
-            LL
+            PB
           </div>
           <h2 className="text-2xl font-bold text-gray-900">Welcome Back</h2>
-          <p className="text-sm text-gray-500 mt-1">Sign in to continue to Lambda Life</p>
+          <p className="text-sm text-gray-500 mt-1">Sign in to continue to Personal Blog</p>
         </div>
 
         <form onSubmit={handleSubmit}>

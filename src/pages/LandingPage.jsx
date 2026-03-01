@@ -7,12 +7,12 @@ const LandingPage = () => {
       <section className="bg-gradient-to-b from-white to-blue-50/40 pt-14 pb-12 px-6 text-center rounded-2xl border border-blue-100/60">
         {/* REVIEW NOTE: Hero badge mirrors the new navbar logo text-mark for brand consistency. */}
         <div className="inline-flex items-center gap-2 bg-white border border-blue-100 rounded-full px-3 py-1 text-sm text-gray-700 mb-6 shadow-sm">
-          <span className="h-6 w-6 rounded-full bg-blue-600 text-white grid place-items-center text-xs font-bold">LL</span>
-          Lambda Life
+          <span className="h-6 w-6 rounded-full bg-blue-600 text-white grid place-items-center text-xs font-bold">PB</span>
+          Personal Blog
         </div>
 
         <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-snug">
-          Build, Learn, and Share on <span className="text-blue-600">Lambda Life</span>
+          Build, Learn, and Share on <span className="text-blue-600">Personal Blog</span>
         </h1>
 
         <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-10">
@@ -55,7 +55,7 @@ const LandingPage = () => {
       {/* ---------------------- FEATURES SECTION ---------------------- */}
       <section className="py-16 px-8 bg-gray-50">
         <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
-          Why Choose Lambda Life?
+          Why Choose Personal Blog?
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">

@@ -49,7 +49,7 @@ const Blogs = () => {
       <section className="bg-white/80 backdrop-blur border border-blue-100 rounded-2xl px-6 py-6 shadow-sm">
         {/* REVIEW NOTE: Intro panel improves visual structure and reduces flat white look. */}
         <p className="text-sm font-medium text-blue-600 mb-2">Latest Posts</p>
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Explore fresh stories from Lambda Life</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Explore fresh stories from Personal Blog</h1>
         <p className="text-gray-600 mt-2">Read practical insights on Java, Spring Boot, React, and full-stack development.</p>
       </section>
 

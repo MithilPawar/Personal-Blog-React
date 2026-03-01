@@ -29,10 +29,10 @@ const Register = () => {
         {/* REVIEW NOTE: Shared auth header pattern keeps Login/Register visually consistent. */}
         <div className="flex flex-col items-center mb-6">
           <div className="h-10 w-10 rounded-xl bg-blue-600 text-white grid place-items-center font-bold text-sm shadow-sm mb-3">
-            LL
+            PB
           </div>
           <h2 className="text-2xl font-bold text-gray-900">Create Account</h2>
-          <p className="text-sm text-gray-500 mt-1">Join Lambda Life and start exploring</p>
+          <p className="text-sm text-gray-500 mt-1">Join Personal Blog and start exploring</p>
         </div>
 
         <form onSubmit={handleSubmit}>
