@@ -17,7 +17,7 @@ const AdminBlogComments = () => {
       setLoading(true);
       setError("");
       const res = await API.get(
-        `/admin/blogs/comment/${id}?page=${page}&size=10`
+        `/admin/blogs/${id}/comments?page=${page}&size=10`
       );
       setComments(res.data.content);
       setTotalPages(res.data.totalPages);
@@ -36,7 +36,7 @@ const AdminBlogComments = () => {
   // 🔁 Hide / Unhide toggle
   const toggleHide = async (commentId) => {
     try {
-      await API.patch(`/admin/blogs/comment/${commentId}/toggle-hide`);
+      await API.patch(`/admin/comments/${commentId}/toggle-hide`);
 
       // Optimistic UI update
       setComments((prev) =>

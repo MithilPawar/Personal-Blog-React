@@ -15,8 +15,8 @@ const AdminBlogPreview = () => {
       try {
         const [blogRes, commentsRes, countRes] = await Promise.all([
           API.get(`/admin/blogs/${id}`),
-          API.get(`/admin/blogs/comment/${id}/comments/recent`),
-          API.get(`/admin/blogs/comment/${id}/comments/count`),
+          API.get(`/admin/blogs/${id}/comments/recent`),
+          API.get(`/admin/blogs/${id}/comments/count`),
         ]);
 
         setBlog(blogRes.data);
