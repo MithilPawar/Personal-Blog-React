@@ -1,5 +1,13 @@
 # React + Vite
 
+> For full project setup (backend + frontend) and CI status, see the repository root README: [../README.md](../README.md).
+
+## CI Status
+
+After pushing this project to GitHub, replace `<owner>` and `<repo>` in the badge below:
+
+[![CI](https://github.com/<owner>/<repo>/actions/workflows/ci.yml/badge.svg)](https://github.com/<owner>/<repo>/actions/workflows/ci.yml)
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
