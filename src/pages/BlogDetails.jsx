@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "../api/axios";
 import Loader from "../components/Loader";
@@ -26,35 +26,50 @@ const BlogDetails = () => {
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [commentsWarning, setCommentsWarning] = useState("");
 
-  const fetchBlogData = async () => {
+  const fetchBlogData = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    setCommentsWarning("");
+
     try {
-      setLoading(true);
-      setError("");
-
-      const [blogRes, commentsRes] = await Promise.all([
-        axios.get(`/blogs/${id}`),
-        axios.get(`/blogs/${id}/comments`),
-      ]);
-
+      const blogRes = await axios.get(`/blogs/${id}`);
       setBlog(blogRes.data);
-      setComments(commentsRes.data);
+    } catch (err) {
+      console.error("Failed to load blog", err);
+      setError("We couldn’t load this blog right now.");
+      setLoading(false);
+      return;
+    }
 
-      if (user) {
+    try {
+      const commentsRes = await axios.get(`/blogs/${id}/comments`);
+      setComments(commentsRes.data);
+    } catch (commentsError) {
+      console.warn("Could not load comments", commentsError);
+      setComments([]);
+      setCommentsWarning("Comments are temporarily unavailable.");
+    }
+
+    if (user) {
+      try {
         const reactionRes = await axios.get(`/blogs/${id}/reaction/status`);
         setUserReaction(reactionRes.data.reactionType);
+      } catch (reactionError) {
+        console.warn("Could not load reaction status", reactionError);
+        setUserReaction("NONE");
       }
-    } catch (err) {
-      console.error(err);
-      setError("We couldn’t load this blog right now.");
-    } finally {
-      setLoading(false);
+    } else {
+      setUserReaction("NONE");
     }
-  };
+
+    setLoading(false);
+  }, [id, user]);
 
   useEffect(() => {
     fetchBlogData();
-  }, [id, user]);
+  }, [fetchBlogData]);
 
   const handleReaction = async (reactionType) => {
     if (!user) return;
@@ -190,6 +205,12 @@ const BlogDetails = () => {
           <h2 className="text-xl font-semibold mb-4 text-gray-900">
             Comments ({comments.length})
           </h2>
+
+          {commentsWarning && (
+            <StatusAlert variant="error" className="mb-4">
+              {commentsWarning}
+            </StatusAlert>
+          )}
 
           {user ? (
             <form onSubmit={handleCommentSubmit} className="mb-5">

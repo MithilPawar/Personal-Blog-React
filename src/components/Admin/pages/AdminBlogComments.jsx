@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import API from "../../../api/axios";
 import StatusAlert from "../../ui/StatusAlert";
@@ -12,7 +12,7 @@ const AdminBlogComments = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
@@ -27,11 +27,11 @@ const AdminBlogComments = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, page]);
 
   useEffect(() => {
     fetchComments();
-  }, [page, id]);
+  }, [fetchComments]);
 
   // 🔁 Hide / Unhide toggle
   const toggleHide = async (commentId) => {

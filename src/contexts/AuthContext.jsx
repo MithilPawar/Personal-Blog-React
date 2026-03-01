@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
@@ -19,6 +20,14 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       try {
         const decoded = jwtDecode(token);
+
+        if (decoded.exp && decoded.exp * 1000 <= Date.now()) {
+          localStorage.removeItem("token");
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+
         setUser({
           token,
           username: decoded.sub,

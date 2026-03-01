@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Pencil, Trash2, Eye, EyeOff } from "lucide-react";
 import API from "../../../api/axios";
@@ -22,7 +22,7 @@ const AdminBlogs = () => {
 
   const debounceRef = useRef(null);
 
-  const fetchBlogs = async (targetPage = page) => {
+  const fetchBlogs = useCallback(async (targetPage) => {
     try {
       setLoading(true);
       setError("");
@@ -46,12 +46,12 @@ const AdminBlogs = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [statusFilter, searchTerm, sortBy, order, pageSize]);
 
   useEffect(() => {
     debounceRef.current = setTimeout(() => fetchBlogs(page), 500);
     return () => clearTimeout(debounceRef.current);
-  }, [statusFilter, searchTerm, sortBy, order, page, pageSize]);
+  }, [fetchBlogs, page]);
 
   useEffect(() => {
     // REVIEW NOTE: Reset to page 1 whenever filters or sorting changes.
