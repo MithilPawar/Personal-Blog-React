@@ -7,16 +7,16 @@ import {
 
 const BlogCard = ({ blog }) => {
   return (
-    <div className="bg-white/95 border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between">
+    <div className="bg-white/95 dark:bg-slate-900/95 border border-gray-200 dark:border-slate-700 rounded-xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between">
       {/* Top Section */}
       <div>
         {/* Title */}
-        <h2 className="text-xl font-semibold mb-2 line-clamp-2 text-gray-900">
+        <h2 className="text-xl font-semibold mb-2 line-clamp-2 text-gray-900 dark:text-gray-100">
           {blog.title}
         </h2>
 
         {/* Content Snippet */}
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+        <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">
           {blog.content}
         </p>
       </div>
@@ -24,18 +24,18 @@ const BlogCard = ({ blog }) => {
       {/* Bottom Section */}
       <div>
         {/* Author & Date */}
-        <div className="flex justify-between items-center text-xs text-gray-500 mb-3">
+        <div className="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400 mb-3">
           <span>✍️ {blog.author}</span>
           <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
         </div>
 
         {/* Divider */}
-        <div className="border-t border-gray-100 my-3" />
+        <div className="border-t border-gray-100 dark:border-slate-700 my-3" />
 
         {/* Actions */}
         <div className="flex justify-between items-center">
           {/* Stats */}
-          <div className="flex items-center gap-5 text-sm text-gray-600">
+          <div className="flex items-center gap-5 text-sm text-gray-600 dark:text-gray-300">
             {/* Likes */}
             <div className="flex items-center gap-1 hover:text-red-600 transition">
               <HandThumbUpIcon className="w-5 h-5" />
@@ -43,7 +43,7 @@ const BlogCard = ({ blog }) => {
             </div>
 
             {/* Dislikes */}
-            <div className="flex items-center gap-1 hover:text-gray-800 transition">
+            <div className="flex items-center gap-1 hover:text-gray-800 dark:hover:text-gray-100 transition">
               <HandThumbDownIcon className="w-5 h-5" />
               <span>{blog.dislikes}</span>
             </div>

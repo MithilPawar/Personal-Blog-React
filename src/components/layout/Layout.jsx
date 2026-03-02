@@ -7,7 +7,7 @@ const Layout = () => {
   const isAuthPage = location.pathname === "/login" || location.pathname === "/register";
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-slate-50 via-white to-blue-50/30 text-gray-900">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-slate-50 via-white to-blue-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-gray-900 dark:text-gray-100">
       <Navbar />
       {/* REVIEW NOTE: Auth pages stay full-width; normal pages use consistent centered spacing without extra footer gap. */}
       {isAuthPage ? (

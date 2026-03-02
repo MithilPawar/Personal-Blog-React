@@ -46,14 +46,14 @@ const Blogs = () => {
 
   return (
     <div className="w-full space-y-8">
-      <section className="bg-white/80 backdrop-blur border border-blue-100 rounded-2xl px-6 py-6 shadow-sm">
+      <section className="bg-white/80 dark:bg-slate-900/80 backdrop-blur border border-blue-100 dark:border-slate-700 rounded-2xl px-6 py-6 shadow-sm">
         {/* REVIEW NOTE: Intro panel improves visual structure and reduces flat white look. */}
-        <p className="text-sm font-medium text-blue-600 mb-2">Latest Posts</p>
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Explore fresh stories from Personal Blog</h1>
-        <p className="text-gray-600 mt-2">Read practical insights on Java, Spring Boot, React, and full-stack development.</p>
+        <p className="text-sm font-medium text-blue-600 dark:text-blue-400 mb-2">Latest Posts</p>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">Explore fresh stories from Personal Blog</h1>
+        <p className="text-gray-600 dark:text-gray-300 mt-2">Read practical insights on Java, Spring Boot, React, and full-stack development.</p>
       </section>
 
-      <section className="bg-white/70 border border-gray-100 rounded-2xl p-4 sm:p-6 shadow-sm">
+      <section className="bg-white/70 dark:bg-slate-900/70 border border-gray-100 dark:border-slate-700 rounded-2xl p-4 sm:p-6 shadow-sm">
       {error && (
         <StatusAlert variant="error" className="mb-6 flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
           {/* REVIEW NOTE: Actionable error state with retry improves perceived reliability. */}

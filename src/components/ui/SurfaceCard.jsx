@@ -5,7 +5,7 @@ const paddingBySize = {
 
 const SurfaceCard = ({ children, className = "", padding = "md" }) => {
   return (
-    <article className={`rounded-2xl border border-gray-200 bg-white shadow-sm ${paddingBySize[padding] || paddingBySize.md} ${className}`}>
+    <article className={`rounded-2xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm ${paddingBySize[padding] || paddingBySize.md} ${className}`}>
       {children}
     </article>
   );
