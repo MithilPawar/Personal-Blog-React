@@ -1,7 +1,14 @@
 import axios from "axios";
 
+const configuredBaseUrl = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL;
+const isLocalhost =
+  typeof window !== "undefined" && ["localhost", "127.0.0.1"].includes(window.location.hostname);
+const fallbackBaseUrl = isLocalhost
+  ? "http://localhost:8080/api"
+  : "https://personal-blog-springboot.onrender.com/api";
+
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api",
+  baseURL: configuredBaseUrl || fallbackBaseUrl,
 });
 
 API.interceptors.request.use((config) => {
